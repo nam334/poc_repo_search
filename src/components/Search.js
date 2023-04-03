@@ -6,18 +6,21 @@ const Search = () => {
     const [text, setText] = useState(false)
   return (
     <>
-    <motion.div 
-    className='flex items-center justify-center 
-     bg-slate-500'
+   <div className='bg-slate-300 h-screen'> 
+   <motion.div 
+    className='flex  bg-white'
      animate = {{
-        height: open ? 400 : 100
+        height: open ? 230 : 70
      }}
     >
    {
-    text ? <div className='flex justify-center items-center'>
-    <input type='text' placeholder='Enter text....' />
-    <button type="button" class="rounded-md p-2 inline-flex items-center justify-center 
-     text-gray-400 hover:text-gray-600 hover:bg-slate-50  focus:outline-none focus:ring-2 
+    text ? <>
+    <div className='flex flex-col'>
+    <div className='flex items-center p-5 mt-10 '>
+    <input type='text' placeholder='Type what you are looking for...' className='font-mono w-[800px] h-8 placeholder-teal-900
+    focus:outline-none text-2xl font-semibold placeholder-p-4' />
+    <button type="button" class="rounded-full p-2 inline-flex items-center bg-slate-50
+     text-teal-700 hover:text-teal-900 hover:bg-slate-50  focus:outline-none focus:ring-2 
       focus:ring-inset focus:ring-indigo-500" 
       onClick={()=> {
         setText(false) 
@@ -25,12 +28,22 @@ const Search = () => {
 
       }}>
               <span class="sr-only">Close menu</span>
-              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" 
+              aria-hidden="true">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-    </div> :  <button
-    className="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
+            <hr/>
+    </div>
+    <div className='border-b-2 border-teal-900  ml-5'></div>
+    </div>
+   
+    </>
+    :  <button
+    className="relative z-[2] flex items-center rounded-r 
+     px-6 py-2.5 text-sm font-medium uppercase leading-tight text-slate-500
+    transition duration-150 ease-in-out 
+   focus:outline-none "
     type="button"
     id="button-addon1"
     data-te-ripple-init
@@ -52,6 +65,7 @@ const Search = () => {
   </button>
    }
     </motion.div>
+   </div>
     </>
   )
 }

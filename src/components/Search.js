@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { PRODUCTS_ENDPOINT } from '../config'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 const Search = () => {
     const [open, setOpen] = useState(false)
     const [text, setText] = useState(false)
+    useEffect(()=> {
+        const fetchData = async () => {
+            const data = await fetch(PRODUCTS_ENDPOINT)
+            const result  = await data.json()
+            console.log(result)
+        }
+        // const fetchedProducts = fetchData()
+        // console.log(fetchedProducts)
+        fetchData()
+    },[])
   return (
     <>
    <div className='bg-slate-300 h-screen'> 

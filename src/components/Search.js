@@ -26,12 +26,14 @@ const Search = () => {
     },[])
   return (
     <>
-   <div className=' h-screen'> 
+   <div className='h-screen'> 
    <motion.div 
-    className='flex  bg-white'
+    className='flex bg-white shadow-md'
      animate = {{
-        height: open ? 230 : 70
+        height: open ? 230 : 70,
+        delay: 1
      }}
+    
     >
    {
     text ? <>
@@ -77,8 +79,10 @@ const Search = () => {
     data-te-ripple-color="light" 
     onClick={()=> {
         setOpen(true) 
-        setText(true)
-        }}>
+        setTimeout(()=>{
+            setText(true)
+        },150)
+    }}>
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"

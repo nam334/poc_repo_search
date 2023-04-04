@@ -6,7 +6,10 @@ import {FaRupeeSign} from "react-icons/fa"
 import {AiFillStar} from "react-icons/ai"
 import { useDispatch, useSelector } from 'react-redux'
 import { addProducts, searchProducts } from '../productSlice'
+import ShowMoreText from "react-show-more-text";
+
 const Search = () => {
+
     const [open, setOpen] = useState(false)
     const [text, setText] = useState(false)
     const [searchText, setSearchText] = useState('')
@@ -99,33 +102,48 @@ const Search = () => {
     <div className='flex flex-wrap '>
    {
     filteredProducts.length ? filteredProducts.map(filteredProduct => <>
-   <div className='p-3 flex flex-col hover:bg-slate-200 items-center  w-96 
+   <div className='p-3 flex flex-col hover:bg-slate-200 items-center  max-w-sm 
     m-4 mx-2 justify-between text-slate-500 fira-sans bg-slate-100 rounded-md'>
     <div className=' p-4  cursor-pointer  flex justify-center items-center'>
+    <div>
     <h2 className='text-sm font-semibold text-slate-600 my-2'>{filteredProduct.title}</h2>
-    <img src={filteredProduct.image} alt="" className='w-28 mb-2 h-36 ' /> 
+    <ShowMoreText
+                /* Default options */
+                lines={3}
+                more="Show more"
+                less="Show less"
+                className="content-css text-sm"
+                anchorClass="show-more-less-clickable bold"
+                //onClick={this.executeOnClick}
+                expanded={false}
+                width={280}
+                truncatedEndingComponent={"... "}
+            >
+    <h4>
+    {filteredProduct.description}
+    </h4>
+    </ShowMoreText>
     </div>
+  
+    <img src={filteredProduct.image} alt="" className='w-28 mb-2 h-36 p-2 rounded-md' /> 
+    </div>
+  
     <div className="flex items-center justify-between  w-full">  
     <div className="flex items-center">
     <FaRupeeSign/>
     <h4 className='text-sm py-2 text-black-200 font-bold'>
-         {/* {product.price} */}
          {
-         
           <span className='strike mr-1'>{filteredProduct.price}</span> 
-       
          } 
     </h4>
     </div>
     <div className="flex items-center">
     <h4 className='text-sm py-2 text-black-200 font-semibold'>{filteredProduct?.rating?.rate}</h4>
     <AiFillStar className='ratingStar' fill="#FF007F" />
-    {/* <Icon fill="#FF007F"/> */}
-  
     </div>
     </div> 
     </div>
-        </>) : <h1>No products</h1>
+        </>) : <h1 className='font-mono text-teal-900 text-3xl mx-auto my-auto p-6'>No products</h1>
    }
    </div>
    </div>

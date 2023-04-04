@@ -9,9 +9,12 @@ const productSlice = createSlice({
     reducers:{
         addProducts:(state, action) => {
             state.products = state.products.concat(action.payload)
+            console.log(state.products.length)
         },
         searchProducts:(state, action) => {
-            console.log(action.payload)
+            if(action.payload === '')
+            state.filteredProducts = []
+            else
             state.filteredProducts = state.products.filter((item) => item.title.toLowerCase().trim().match(action.payload.toLowerCase().trim()))
         }
     }

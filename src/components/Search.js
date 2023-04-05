@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { PRODUCTS_ENDPOINT } from '../config'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
@@ -7,7 +7,8 @@ import {AiFillStar} from "react-icons/ai"
 import { useDispatch, useSelector } from 'react-redux'
 import { addProducts, searchProducts } from '../productSlice'
 import ShowMoreText from "react-show-more-text";
-
+import { PushToTalkButton, PushToTalkButtonContainer, ErrorPanel } from '@speechly/react-ui'
+import { useSpeechContext } from '@speechly/react-client'
 const Search = () => {
 
     const [open, setOpen] = useState(false)
@@ -15,7 +16,21 @@ const Search = () => {
     const [searchText, setSearchText] = useState('')
     const dispatch = useDispatch()
     const filteredProducts = useSelector(store => store.product.filteredProducts)
-    console.log(filteredProducts && filteredProducts)
+    const inputRef = useRef()
+    const {segment} = useSpeechContext()
+
+    useEffect(()=>{
+      if(segment){
+        console.log(segment)
+        if(segment.intent.intent === 'search_product'){
+          // dispatch(searchProducts(e.target.value))
+          console.log(segment.intent.intent)
+        }
+        segment.entities.forEach((e)=>{
+          dispatch(searchProducts(e.value))
+        })
+      }
+    },[segment])
     useEffect(()=> {
         const fetchData = async () => {
             const data = await fetch(PRODUCTS_ENDPOINT)
@@ -26,7 +41,11 @@ const Search = () => {
         // const fetchedProducts = fetchData()
         // console.log(fetchedProducts)
         fetchData()
+        
     },[])
+    // useEffect(()=>{
+    //     inputRef.current.autofocus = true
+    // },[inputRef, searchText])
   return (
     <>
    <div className='h-screen'> 
@@ -45,12 +64,18 @@ const Search = () => {
     <input type='text' placeholder='Type what you are looking for...' 
      className='font-mono w-[800px] h-8 placeholder-teal-900
     focus:outline-none text-2xl font-semibold placeholder-p-4' 
+    ref={inputRef}
     value={searchText}
     onChange={(e) => {
         setSearchText(e.target.value) 
         dispatch(searchProducts(e.target.value))
     }}
     />
+  
+    <PushToTalkButtonContainer>
+      <PushToTalkButton/>
+      {/* <ErrorPanel/> */}
+    </PushToTalkButtonContainer>
     <button type="button" class="rounded-full p-2 inline-flex items-center bg-slate-50
      text-teal-700 hover:text-teal-900 hover:bg-slate-50  focus:outline-none focus:ring-2 
       focus:ring-inset focus:ring-indigo-500" 
@@ -98,6 +123,7 @@ const Search = () => {
     </svg>
   </button>
    }
+   
     </motion.div>
     <div className='flex flex-wrap '>
    {
@@ -143,7 +169,18 @@ const Search = () => {
     </div>
     </div> 
     </div>
-        </>) : <h1 className='font-mono text-teal-900 text-3xl mx-auto my-auto p-6'>No products</h1>
+        </>) : 
+        <>
+          {
+      segment ? (
+        <>
+        {segment.words.map((w) => w.value).join(" ")}
+        </>
+      ) : null
+    }
+    <h1 className='font-mono text-teal-900 text-3xl mx-auto my-auto p-6'>No products</h1>
+        </>
+        
    }
    </div>
    </div>

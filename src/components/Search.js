@@ -101,7 +101,7 @@ const Search = () => {
         For voice search plz press and hold the microphone and speak in the following format - Eg
         <span className='font-semibold'>
         "Search for product with/under name Mens Cotton Jacket "
-        </span> 
+        </span>  
       </h4>
       <h5 className='text-teal-950'>
         To clear your search plz say - Eg 

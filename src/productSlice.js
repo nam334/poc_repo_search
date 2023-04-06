@@ -5,7 +5,7 @@ const productSlice = createSlice({
     initialState:{
         products:[],
         filteredProducts:[]
-    },
+    }, 
     reducers:{
         addProducts:(state, action) => {
             state.products = state.products.concat(action.payload)

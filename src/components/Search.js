@@ -14,6 +14,7 @@ const Search = () => {
     const [open, setOpen] = useState(false)
     const [text, setText] = useState(false)
     const [searchText, setSearchText] = useState('')
+    const [transcript, setTranscript] = useState('')
     const dispatch = useDispatch()
     const filteredProducts = useSelector(store => store.product.filteredProducts)
     const inputRef = useRef()
@@ -22,9 +23,16 @@ const Search = () => {
     useEffect(()=>{
       if(segment){
         console.log(segment)
+        setTranscript(segment)
         if(segment.intent.intent === 'search_product'){
           // dispatch(searchProducts(e.target.value))
           console.log(segment.intent.intent)
+        }
+        if(segment.intent.intent === 'clear_search'){
+         // setTranscript("")
+          dispatch(searchProducts(''))
+          setTranscript("")
+         // console.log(segment.intent.intent)
         }
         segment.entities.forEach((e)=>{
           dispatch(searchProducts(e.value))
@@ -60,8 +68,9 @@ const Search = () => {
    {
     text ? <>
     <div className='flex flex-col'>
-    <div className='flex items-center p-5 mt-10 '>
-    <input type='text' placeholder='Type what you are looking for...' 
+    <div className='flex items-center p-5 mt-10 flex-col '>
+      <div className='flex border-b-2 border-teal-800 p-3'>
+      <input type='text' placeholder='Type what you are looking for...' 
      className='font-mono w-[800px] h-8 placeholder-teal-900
     focus:outline-none text-2xl font-semibold placeholder-p-4' 
     ref={inputRef}
@@ -71,11 +80,6 @@ const Search = () => {
         dispatch(searchProducts(e.target.value))
     }}
     />
-  
-    <PushToTalkButtonContainer>
-      <PushToTalkButton/>
-      {/* <ErrorPanel/> */}
-    </PushToTalkButtonContainer>
     <button type="button" class="rounded-full p-2 inline-flex items-center bg-slate-50
      text-teal-700 hover:text-teal-900 hover:bg-slate-50  focus:outline-none focus:ring-2 
       focus:ring-inset focus:ring-indigo-500" 
@@ -90,9 +94,41 @@ const Search = () => {
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
-            <hr/>
+      </div>
+    <div className='italic self-start  p-3'>
+     
+      <h4 className='text-teal-950'>
+        For voice search plz press and hold the microphone and speak in the following format - Eg
+        <span className='font-semibold'>
+        "Search for product with/under name Mens Cotton Jacket "
+        </span> 
+      </h4>
+      <h5 className='text-teal-950'>
+        To clear your search plz say - Eg 
+        <span className='font-semibold'>
+          "Clear search"
+        </span>
+      </h5>
+   
+      <h5 className='font-thin'>
+      {
+        transcript && (
+          <>
+          {transcript.words.map((w) => w.value).join(" ")}
+          </>
+        )
+    }
+      </h5>
     </div>
-    <div className='border-b-2 border-teal-900  ml-5'></div>
+           
+  
+  <div className='border-b-2 border-teal-900  ml-5'></div>
+    </div>
+    <PushToTalkButtonContainer>
+      <PushToTalkButton/>
+      {/* <ErrorPanel/> */}
+    </PushToTalkButtonContainer>
+   
     </div>
    
     </>
@@ -171,16 +207,8 @@ const Search = () => {
     </div>
         </>) : 
         <>
-          {
-      segment ? (
-        <>
-        {segment.words.map((w) => w.value).join(" ")}
+           <h1 className='font-mono text-teal-900 text-3xl mx-auto my-auto p-6'>No products</h1>
         </>
-      ) : null
-    }
-    <h1 className='font-mono text-teal-900 text-3xl mx-auto my-auto p-6'>No products</h1>
-        </>
-        
    }
    </div>
    </div>

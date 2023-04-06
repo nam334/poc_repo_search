@@ -17,6 +17,8 @@ const productSlice = createSlice({
             else
             state.filteredProducts = state.products.filter((item) => item.title.toLowerCase().trim().match(action.payload.toLowerCase().trim()))
         }
+
+        
     }
 })
 
